@@ -33,7 +33,7 @@ public static class MauiProgram
 
 		builder.Services.AddDbContext<AppDbContext>();
 
-
+        //Return the built app
         return builder.Build();
 	}
 }
