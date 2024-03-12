@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PnsApp.Maui.Pages.DetailZakaznika"
+             Title="Detail Zákazníka"
+             
+             xmlns:viewmodel="clr-namespace:PnsApp.Maui.ViewModels"
+             x:DataType="viewmodel:DetailZakaznikaViewModel"
+             >
+
+    <ScrollView>
+
+        <VerticalStackLayout>
+
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+
+
+                <Image Source="user.png" Grid.Column="0" Grid.Row="0"  HorizontalOptions="Center" Grid.ColumnSpan="2" HeightRequest="70"/>
+
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Text="Jméno:"
+                    x:Name="Jmeno_label"
+                    HorizontalTextAlignment="End"
+                    FontFamily="monospace" Margin="0,10,20,0"
+                    
+                 />
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Text="Příjmení:"
+                    x:Name="Prijmeni_label"
+                    HorizontalTextAlignment="End"
+                    FontFamily="monospace" Margin="0,10,20,0"
+                    
+                 />
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="3"
+                    Text="Telefon:"
+                    x:Name="Telefon_label"
+                    HorizontalTextAlignment="End"
+                    FontFamily="monospace" Margin="0,10,20,0"
+                    
+                 />
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="4"
+                    Text="E-mail:"
+                    x:Name="Email_label"
+                    HorizontalTextAlignment="End"
+                    FontFamily="monospace" Margin="0,10,20,0"
+                    
+                 />
+
+
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Placeholder="Zadejte Jméno"
+                    Margin="15,0,35,0"
+                    x:Name="Jmeno_entry"
+                    Text="{Binding Jmeno}"
+                    
+                    />
+
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Placeholder="Zadejte Příjmení:"
+                    Margin="15,0,35,0"
+                    x:Name="Prijmeni_entry"
+                    Text="{Binding Prijmeni}"
+                    
+                    />
+
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Placeholder="Zadejte Telefon:"
+                    Margin="15,0,35,0"
+                    x:Name="Telefon_entry"
+                    Text="{Binding Telefon}"
+                    
+                    />
+
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="4"
+                    Placeholder="Zadejte E-mail:"
+                    Margin="15,0,35,0"
+                    x:Name="Email_entry"
+                    Text="{Binding Email}"
+                    
+                    />
+
+                <StackLayout Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalOptions="Center" Orientation="Horizontal">
+
+                    <Button
+                        Text="Uložit"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Clicked="ulozitZakaznika_btn_Clicked" 
+                        Background="Green" 
+                        TextColor="White"
+                        FontFamily="monospace"
+                        Margin="10"
+                     />
+
+
+                    <Button
+                        Text="Storno"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Clicked="detailZakaznika_btn_Clicked" 
+                        Background="#0550F5" 
+                        TextColor="White"
+                        FontFamily="monospace"
+                        Margin="10"
+                     />
+
+                    <Button
+                        Text="!! Smazat !!"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Clicked="detailZakaznikaSmazat_Clicked" 
+                        Background="Red" 
+                        TextColor="White"
+                        FontFamily="monospace"
+                        Margin="10"
+                        CommandParameter="delete"
+                        x:Name="smazatButton"
+                     />
+
+                </StackLayout>
+
+            </Grid>
+
+
+
+        </VerticalStackLayout>
+
+
+    </ScrollView>
+
+
+</ContentPage>
