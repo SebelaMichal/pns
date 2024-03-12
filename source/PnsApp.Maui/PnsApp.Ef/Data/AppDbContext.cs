@@ -25,6 +25,21 @@ namespace PnsApp.Maui.Data
 
     }
 
+    public enum BarvaPozadi: int
+    {
+        Cervena = 1,
+        Zelena = 2,
+        Modra = 3
+    }
+
+    public class Pozadi
+    {
+        [Key]
+        public int Id { get;set; }
+
+        public BarvaPozadi BarvaPozadi { get; set; }
+    }
+
     public class AppDbContext: DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
@@ -33,6 +48,8 @@ namespace PnsApp.Maui.Data
         }
 
         public virtual DbSet<Zakaznik> Zakaznik { get; set; }
+
+        public virtual DbSet<Pozadi> Pozadi { get; set; }
     }
 
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
