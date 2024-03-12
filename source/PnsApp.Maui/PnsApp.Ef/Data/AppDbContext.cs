@@ -40,7 +40,8 @@ namespace PnsApp.Maui.Data
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=192.168.1.57;Database=LuRaMi;User Id=lurami_user;Password=lurami_user;TrustServerCertificate=True");
+            //optionsBuilder.UseSqlServer("Server=192.168.1.57;Database=LuRaMi;User Id=lurami_user;Password=lurami_user;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Server=192.168.88.209;Database=LuRaMi3;User Id=lurami_user;Password=lurami;Persist Security Info=True;Encrypt=True;TrustServerCertificate=True");
 
             return new AppDbContext(optionsBuilder.Options);
         }
