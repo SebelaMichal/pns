@@ -1,4 +1,6 @@
 ﻿
+using PnsApp.Maui.Data;
+using PnsApp.Maui.Mappers;
 using PnsApp.Maui.ViewModels;
 using System.ComponentModel;
 using System.Reflection;
@@ -9,12 +11,12 @@ namespace PnsApp.Maui.Pages;
 
 public partial class MainPage : ContentPage
 {
-    public List<DetailZakaznikaViewModel> Zakaznici { get; set; }
+    //public List<DetailZakaznikaViewModel> Zakaznici { get; set; }
     
     public MainPage()
 	{
         InitializeComponent();
-        Zakaznici = new List<DetailZakaznikaViewModel>();
+        //Zakaznici = new List<DetailZakaznikaViewModel>();
         LoadPageBackground();
     }
 
@@ -26,10 +28,10 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private async void Vsup_detailZakaznika(object sender, EventArgs e)
     {
-        var page = new DetailZakaznika();
+        var page = new DetailZakaznika(null);
         page.AddedItem += delegate(object sender, ItemEventArgs iea)
         {
-            this.Zakaznici.Add(iea.Model);
+            //this.Zakaznici.Add(iea.Model);
         };
         await Navigation.PushAsync(page);
     }
@@ -40,8 +42,21 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        detailZakaznikaListView.ItemsSource = null;
-        detailZakaznikaListView.ItemsSource = Zakaznici;
+        //detailZakaznikaListView.ItemsSource = null;
+        //detailZakaznikaListView.ItemsSource = Zakaznici;
+
+        LoadData();
+    }
+    /// <summary>
+    /// metoda, která načte z databáze mssql seznam zákazníků a zobrazí je v listview, případně občerství seznam dle db
+    /// </summary>
+    private void LoadData()
+    {
+        AppDbContextFactory factory = new AppDbContextFactory();
+        using (var db = factory.CreateDbContext(null))
+        {
+            detailZakaznikaListView.ItemsSource = ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
+        }
     }
 
     /// <summary>
@@ -51,19 +66,14 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private async void editButton_Clicked(object sender, EventArgs e)
     {
+        
         var btn = (Button)sender;
-        var id = (Guid)btn.CommandParameter;
-        var zakaznik = Zakaznici.Single(x => x.Id == id);
+        var id = (int)btn.CommandParameter;
 
-        var page = new DetailZakaznika();
-        // prida dalegata detailu, bude vyvolan pouze v pripade pokud dojde k udalosti OnDelete na strance detailu
-        page.Deleted += delegate(object sender, ItemEventArgs ea)
-        {
-            Zakaznici.Remove(ea.Model);
-        };
-       
-        page.Model = zakaznik;
+        var page = new DetailZakaznika(id);
         await Navigation.PushAsync(page);
+
+        //todo: loaddata
     }
 
     /// <summary>
@@ -74,11 +84,17 @@ public partial class MainPage : ContentPage
     private void smazatButton_Clicked(object sender, EventArgs e)
     {
         var btn = (Button)sender;
-        var id = (Guid)btn.CommandParameter;
-        var zakaznik = Zakaznici.Single(x => x.Id == id);
-        Zakaznici.Remove(zakaznik);
-        OnAppearing(); 
+        var id = (int)btn.CommandParameter;
 
+        AppDbContextFactory factory = new AppDbContextFactory();
+        using (var db = factory.CreateDbContext(null))
+        {
+            var dbZaznamZakaznika = db.Zakaznik.Find(id);
+            db.Zakaznik.Remove(dbZaznamZakaznika);
+            db.SaveChanges();
+        }
+
+        LoadData();
     }
 
     /// <summary>

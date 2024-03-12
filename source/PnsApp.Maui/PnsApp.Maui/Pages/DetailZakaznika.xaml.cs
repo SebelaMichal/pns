@@ -1,4 +1,5 @@
 using PnsApp.Maui.Data;
+using PnsApp.Maui.Mappers;
 using PnsApp.Maui.ViewModels;
 
 namespace PnsApp.Maui.Pages;
@@ -22,15 +23,27 @@ public partial class DetailZakaznika : ContentPage
         }
     }
 
+	private int? _dbId = null;
 	/// <summary>
 	/// Konstruktor DetailuZákazníka
 	/// </summary>
-	public DetailZakaznika()
+	public DetailZakaznika(int? dbId)
 	{
-		_model = new DetailZakaznikaViewModel();
 		InitializeComponent();
 
-	}
+		if (dbId == null)   //nový záznam
+		{
+			this.BindingContext = _model = new DetailZakaznikaViewModel();
+        }
+		else	//editace záznamu
+		{
+			AppDbContextFactory factory = new AppDbContextFactory();
+			using (var db = factory.CreateDbContext(null))
+			{
+				this.BindingContext = _model = ZakaznikMapper.ToViewModel(db.Zakaznik.Where(zakaznik => zakaznik.Id == dbId.Value)).Single();
+			}
+		}
+    }
 
 	/// <summary>
 	/// Obnovy data pred nactenim page
@@ -51,7 +64,16 @@ public partial class DetailZakaznika : ContentPage
 		AppDbContextFactory factory = new AppDbContextFactory();
 		using (var db = factory.CreateDbContext(null))
 		{
-			db.Zakaznik.Add(new Zakaznik() { Jmeno = _model.Jmeno, Prijmeni = _model.Prijmeni, Email = _model.Email, Telefon = _model.Telefon });
+			if (this._dbId == null)
+			{
+				var zak = ZakaznikMapper.ToEntity(Model);
+				db.Zakaznik.Add(zak);
+			}
+			else
+			{
+				var zak = db.Zakaznik.Find(_dbId.Value);
+				ZakaznikMapper.ToEntity(Model, zak);
+			}
 			db.SaveChanges();
 		}
 

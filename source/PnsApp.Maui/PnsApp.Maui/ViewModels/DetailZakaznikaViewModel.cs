@@ -8,9 +8,9 @@ namespace PnsApp.Maui.ViewModels
 {
     public class DetailZakaznikaViewModel: BindableObject
     {
-        private Guid _id = Guid.NewGuid();
+        private int _id;
 
-        public Guid Id { get { return _id; } set { _id = value; OnPropertyChanged(nameof(Id)); } }
+        public int Id { get { return _id; } set { _id = value; OnPropertyChanged(nameof(Id)); } }
 
         private string _jmeno;
         public string Jmeno { get { return _jmeno; } set { _jmeno = value; OnPropertyChanged(nameof(Jmeno)); } }
