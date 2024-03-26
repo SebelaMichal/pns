@@ -1,6 +1,4 @@
 ﻿
-using PnsApp.Maui.Data;
-using PnsApp.Maui.Mappers;
 using PnsApp.Maui.ViewModels;
 using System.ComponentModel;
 using System.Reflection;
@@ -52,11 +50,13 @@ public partial class MainPage : ContentPage
     /// </summary>
     private void LoadData()
     {
+        /*
         AppDbContextFactory factory = new AppDbContextFactory();
         using (var db = factory.CreateDbContext(null))
         {
             detailZakaznikaListView.ItemsSource = ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
-        }
+        }*/
+
     }
 
     /// <summary>

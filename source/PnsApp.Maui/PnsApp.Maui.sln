@@ -5,7 +5,11 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnsApp.Maui", "PnsApp.Maui\PnsApp.Maui.csproj", "{CCDA3783-E5B9-4A4E-88A0-9DECFD4D7404}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PnsApp.Ef", "PnsApp.Ef\PnsApp.Ef.csproj", "{AA2D2EB0-1AEA-412C-AD5B-7048D837BF15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnsApp.Ef", "PnsApp.Ef\PnsApp.Ef.csproj", "{AA2D2EB0-1AEA-412C-AD5B-7048D837BF15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PnsApp.WebApi", "PnsApp.WebApi\PnsApp.WebApi.csproj", "{9B9870A1-8088-4B39-BEF4-B553F04690F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pns.Dto", "Pns.Dto\Pns.Dto.csproj", "{7E4E4239-0A45-4648-AFF0-2F5C97FA3A84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +27,14 @@ Global
 		{AA2D2EB0-1AEA-412C-AD5B-7048D837BF15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA2D2EB0-1AEA-412C-AD5B-7048D837BF15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA2D2EB0-1AEA-412C-AD5B-7048D837BF15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B9870A1-8088-4B39-BEF4-B553F04690F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B9870A1-8088-4B39-BEF4-B553F04690F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B9870A1-8088-4B39-BEF4-B553F04690F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B9870A1-8088-4B39-BEF4-B553F04690F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E4E4239-0A45-4648-AFF0-2F5C97FA3A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E4E4239-0A45-4648-AFF0-2F5C97FA3A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E4E4239-0A45-4648-AFF0-2F5C97FA3A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E4E4239-0A45-4648-AFF0-2F5C97FA3A84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

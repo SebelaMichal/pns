@@ -95,7 +95,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\PnsApp.Ef\PnsApp.Ef.csproj" />
+	  <ProjectReference Include="..\Pns.Dto\Pns.Dto.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

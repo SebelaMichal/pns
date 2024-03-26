@@ -1,5 +1,5 @@
-﻿using PnsApp.Maui.Data;
-using PnsApp.Maui.ViewModels;
+﻿using PnsApp.Dto;
+using PnsApp.Maui.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace PnsApp.Maui.Mappers
 {
     public class ZakaznikMapper
     {
-        public static IQueryable<DetailZakaznikaViewModel> ToViewModel(IQueryable<Zakaznik> zakaznici)
+        public static IQueryable<ZakaznikDto> ToViewModel(IQueryable<Zakaznik> zakaznici)
         {
-            return zakaznici.Select(x => new DetailZakaznikaViewModel()
+            return zakaznici.Select(x => new ZakaznikDto()
             {
                 Jmeno = x.Jmeno,
                 Prijmeni = x.Prijmeni,
@@ -22,7 +22,7 @@ namespace PnsApp.Maui.Mappers
             });
         }
 
-        public static Zakaznik ToEntity(DetailZakaznikaViewModel model, Zakaznik entity = null)
+        public static Zakaznik ToEntity(ZakaznikDto model, Zakaznik entity = null)
         {
             var zak = entity ?? new Zakaznik();
             zak.Jmeno = model.Jmeno;
