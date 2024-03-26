@@ -9,6 +9,5 @@ namespace PnsApp.Dto
         public string Prijmeni { get; set; }
         public string Telefon { get; set; }
         public string Email { get; set; }
-        public byte[] Fotka { get; set; }
     }
 }

@@ -44,5 +44,19 @@ namespace PnsApp.WebApi.Controllers
                 return ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
             }
         }
+
+        [HttpPut(Name = "PridatZakaznika")]
+        public IActionResult PridatZakaznika(ZakaznikDto zakaznik)
+        {
+            AppDbContextFactory factory = new AppDbContextFactory();
+            using (var db = factory.CreateDbContext(null))
+            {
+                var efZakaznik = ZakaznikMapper.ToEntity(zakaznik);
+                db.Zakaznik.Add(efZakaznik);
+                db.SaveChanges();
+            }
+
+            return Ok();
+        }
     }
 }

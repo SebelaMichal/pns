@@ -23,7 +23,6 @@ namespace PnsApp.Maui.Data
         [MaxLength(254)]
         public string Email { get; set; }
 
-        public byte[] Fotka { get; set; }
 
     }
 
