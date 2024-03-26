@@ -29,6 +29,7 @@ namespace PnsApp.Maui.Mappers
             zak.Prijmeni = model.Prijmeni;
             zak.Telefon = model.Telefon;
             zak.Email = model.Email;
+            //zak.Id = model.Id;
 
             return zak;
         }
