@@ -1,0 +1,9 @@
+do 21 dílu:
+
+dodělat zbytek rest api endpointů dle logiky maui aplikace 
+- uprava zakaznika
+- odstranění zakaznika
+- načtení pozadí
+- uložení pozadí
+
+ve 21. dílu tyhle metody / endpointy využijeme v maui aplikaci
