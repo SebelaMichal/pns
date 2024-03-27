@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pns.Dto\Pns.Dto.csproj" />
+  </ItemGroup>
+
 </Project>
