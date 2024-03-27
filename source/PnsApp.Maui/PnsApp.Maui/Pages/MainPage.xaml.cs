@@ -83,16 +83,16 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void smazatButton_Clicked(object sender, EventArgs e)
     {
-        var btn = (Button)sender;
-        var id = (int)btn.CommandParameter;
+        //var btn = (Button)sender;
+        //var id = (int)btn.CommandParameter;
 
-        AppDbContextFactory factory = new AppDbContextFactory();
-        using (var db = factory.CreateDbContext(null))
-        {
-            var dbZaznamZakaznika = db.Zakaznik.Find(id);
-            db.Zakaznik.Remove(dbZaznamZakaznika);
-            db.SaveChanges();
-        }
+        //AppDbContextFactory factory = new AppDbContextFactory();
+        //using (var db = factory.CreateDbContext(null))
+        //{
+        //    var dbZaznamZakaznika = db.Zakaznik.Find(id);
+        //    db.Zakaznik.Remove(dbZaznamZakaznika);
+        //    db.SaveChanges();
+        //}
 
         LoadData();
     }
@@ -118,31 +118,31 @@ public partial class MainPage : ContentPage
     {
         //Preferences.Set("pb", this.BackgroundColor.ToHex());
 
-        AppDbContextFactory factory = new AppDbContextFactory();
-        using (var db = factory.CreateDbContext(null))
-        {
-            BarvaPozadi bp;
-            if (this.BackgroundColor.ToHex() == "#00FF00")
-                bp = BarvaPozadi.Zelena;
-            else if (this.BackgroundColor.ToHex() == "#FF0000")
-                bp = BarvaPozadi.Cervena;
-            else
-                bp = BarvaPozadi.Modra;
+        //AppDbContextFactory factory = new AppDbContextFactory();
+        //using (var db = factory.CreateDbContext(null))
+        //{
+        //    BarvaPozadi bp;
+        //    if (this.BackgroundColor.ToHex() == "#00FF00")
+        //        bp = BarvaPozadi.Zelena;
+        //    else if (this.BackgroundColor.ToHex() == "#FF0000")
+        //        bp = BarvaPozadi.Cervena;
+        //    else
+        //        bp = BarvaPozadi.Modra;
 
-            var pozadiDb = db.Pozadi.SingleOrDefault();
+        //    var pozadiDb = db.Pozadi.SingleOrDefault();
 
-            if(pozadiDb == null)
-            {
-                pozadiDb = new Pozadi() { BarvaPozadi = bp };
-                db.Pozadi.Add(pozadiDb);
-            }
-            else
-            {
-                pozadiDb.BarvaPozadi = bp;
-            }
+        //    if(pozadiDb == null)
+        //    {
+        //        pozadiDb = new Pozadi() { BarvaPozadi = bp };
+        //        db.Pozadi.Add(pozadiDb);
+        //    }
+        //    else
+        //    {
+        //        pozadiDb.BarvaPozadi = bp;
+        //    }
 
-            db.SaveChanges();
-        }
+        //    db.SaveChanges();
+        //}
     }
 
    
@@ -162,27 +162,27 @@ public partial class MainPage : ContentPage
         }*/
 
 
-        AppDbContextFactory factory = new AppDbContextFactory();
-        using (var db = factory.CreateDbContext(null))
-        {
-            var barva = (db.Pozadi.SingleOrDefault() ?? new Pozadi() { BarvaPozadi = BarvaPozadi.Cervena }).BarvaPozadi;
+        //AppDbContextFactory factory = new AppDbContextFactory();
+        //using (var db = factory.CreateDbContext(null))
+        //{
+        //    var barva = (db.Pozadi.SingleOrDefault() ?? new Pozadi() { BarvaPozadi = BarvaPozadi.Cervena }).BarvaPozadi;
 
-            switch (barva)
-            {
-                case BarvaPozadi.Cervena:
-                    this.BackgroundColor = Color.FromHex("#FF0000");
-                    break;
+        //    switch (barva)
+        //    {
+        //        case BarvaPozadi.Cervena:
+        //            this.BackgroundColor = Color.FromHex("#FF0000");
+        //            break;
 
-                case BarvaPozadi.Modra:
-                    this.BackgroundColor = Color.FromHex("#0000FF");
-                    break;
+        //        case BarvaPozadi.Modra:
+        //            this.BackgroundColor = Color.FromHex("#0000FF");
+        //            break;
 
-                case BarvaPozadi.Zelena:
-                    this.BackgroundColor = Color.FromHex("#00FF00");
-                    break;
+        //        case BarvaPozadi.Zelena:
+        //            this.BackgroundColor = Color.FromHex("#00FF00");
+        //            break;
 
-            }
-        }
+        //    }
+        //}
     }
 
   
