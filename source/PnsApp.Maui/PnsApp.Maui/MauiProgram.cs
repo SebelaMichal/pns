@@ -30,7 +30,7 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-		builder.Services.AddDbContext<AppDbContext>();
+		
 
         //Return the built app
         return builder.Build();

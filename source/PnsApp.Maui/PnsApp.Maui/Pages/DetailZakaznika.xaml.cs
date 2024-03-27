@@ -36,11 +36,11 @@ public partial class DetailZakaznika : ContentPage
         }
 		else	//editace záznamu
 		{
-			AppDbContextFactory factory = new AppDbContextFactory();
-			using (var db = factory.CreateDbContext(null))
-			{
-				this.BindingContext = _model = ZakaznikMapper.ToViewModel(db.Zakaznik.Where(zakaznik => zakaznik.Id == dbId.Value)).Single();
-			}
+			//AppDbContextFactory factory = new AppDbContextFactory();
+			//using (var db = factory.CreateDbContext(null))
+			//{
+			//	this.BindingContext = _model = ZakaznikMapper.ToViewModel(db.Zakaznik.Where(zakaznik => zakaznik.Id == dbId.Value)).Single();
+			//}
 		}
     }
 
@@ -60,21 +60,21 @@ public partial class DetailZakaznika : ContentPage
 	/// <param name="e"></param>
 	private void ulozitZakaznika_btn_Clicked(object sender, EventArgs e)
     {
-		AppDbContextFactory factory = new AppDbContextFactory();
-		using (var db = factory.CreateDbContext(null))
-		{
-			if (this._dbId == null)
-			{
-				var zak = ZakaznikMapper.ToEntity(Model);
-				db.Zakaznik.Add(zak);
-			}
-			else
-			{
-				var zak = db.Zakaznik.Find(_dbId.Value);
-				ZakaznikMapper.ToEntity(Model, zak);
-			}
-			db.SaveChanges();
-		}
+		//AppDbContextFactory factory = new AppDbContextFactory();
+		//using (var db = factory.CreateDbContext(null))
+		//{
+		//	if (this._dbId == null)
+		//	{
+		//		var zak = ZakaznikMapper.ToEntity(Model);
+		//		db.Zakaznik.Add(zak);
+		//	}
+		//	else
+		//	{
+		//		var zak = db.Zakaznik.Find(_dbId.Value);
+		//		ZakaznikMapper.ToEntity(Model, zak);
+		//	}
+		//	db.SaveChanges();
+		//}
 
 		OnAddedItem(new ItemEventArgs() { Model = _model });
 		Navigation.PopAsync();

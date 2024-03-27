@@ -9,29 +9,6 @@ namespace PnsApp.WebApi.Controllers
     [Route("[controller]/[action]")]
     public class PnsController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public PnsController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
-        /*
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }*/
 
         [HttpGet(Name = "GetZakaznici")]
         public IEnumerable<ZakaznikDto> GetZakaznici()
@@ -39,13 +16,11 @@ namespace PnsApp.WebApi.Controllers
             AppDbContextFactory factory = new AppDbContextFactory();
             using (var db = factory.CreateDbContext(null))
             {
-                //detailZakaznikaListView.ItemsSource = ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
-
                 return ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
             }
         }
 
-        [HttpPut(Name = "PridatZakaznika")]
+        [HttpPost(Name = "PridatZakaznika")]
         public IActionResult PridatZakaznika(ZakaznikDto zakaznik)
         {
             AppDbContextFactory factory = new AppDbContextFactory();
@@ -53,6 +28,25 @@ namespace PnsApp.WebApi.Controllers
             {
                 var efZakaznik = ZakaznikMapper.ToEntity(zakaznik);
                 db.Zakaznik.Add(efZakaznik);
+                db.SaveChanges();
+            }
+
+            return Ok();
+        }
+
+        [HttpPut(Name = "UpravitZakaznika")]
+        public IActionResult UpravitZakaznika(ZakaznikDto zakaznik)
+        {
+            AppDbContextFactory factory = new AppDbContextFactory();
+            using (var db = factory.CreateDbContext(null))
+            {
+                var efZakaznik = db.Zakaznik.Find(zakaznik.Id);
+                if (efZakaznik == null)
+                {
+                    return NotFound();
+                }
+
+                ZakaznikMapper.ToEntity(zakaznik, efZakaznik);
                 db.SaveChanges();
             }
 
