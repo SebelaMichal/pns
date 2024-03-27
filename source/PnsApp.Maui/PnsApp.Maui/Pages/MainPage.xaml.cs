@@ -1,4 +1,5 @@
 ﻿
+using DotNet.RestApi.Client;
 using Newtonsoft.Json;
 using PnsApp.Dto;
 using PnsApp.Maui.ViewModels;
@@ -51,7 +52,7 @@ public partial class MainPage : ContentPage
     /// <summary>
     /// metoda, která načte z databáze mssql seznam zákazníků a zobrazí je v listview, případně občerství seznam dle db
     /// </summary>
-    private void LoadData()
+    private async Task LoadData()
     {
         /*
         AppDbContextFactory factory = new AppDbContextFactory();
@@ -60,6 +61,7 @@ public partial class MainPage : ContentPage
             detailZakaznikaListView.ItemsSource = ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
         }*/
 
+        /*
         //nacteni dat z webapi
         var client = new HttpClient();
         var response = client.GetAsync("http://localhost:5018/Pns/GetZakaznici").Result;
@@ -67,10 +69,15 @@ public partial class MainPage : ContentPage
 
         Newtonsoft.Json.JsonSerializer jser = new Newtonsoft.Json.JsonSerializer();
         var zakaznici = (List<ZakaznikDto>)jser.Deserialize(new StringReader(json), typeof(List<ZakaznikDto>));
-
+        
         //var zakaznici = JsonSerializer.Deserialize<List<ZakaznikDto>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = false });
         detailZakaznikaListView.ItemsSource = zakaznici;
+        */
 
+
+        DotNet.RestApi.Client.RestApiClient client = new DotNet.RestApi.Client.RestApiClient(new HttpClient());
+        var response = await client.SendJsonRequest(HttpMethod.Get, new Uri("http://localhost:5018/Pns/GetZakaznici"), null);
+        detailZakaznikaListView.ItemsSource = await response.DeseriaseJsonResponseAsync<List<ZakaznikDto>>();
 
 
     }
@@ -97,7 +104,7 @@ public partial class MainPage : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void smazatButton_Clicked(object sender, EventArgs e)
+    private async void smazatButton_Clicked(object sender, EventArgs e)
     {
         var btn = (Button)sender;
         var id = (int)btn.CommandParameter;
@@ -110,7 +117,11 @@ public partial class MainPage : ContentPage
         //    db.SaveChanges();
         //}
 
-        LoadData();
+
+        DotNet.RestApi.Client.RestApiClient client = new DotNet.RestApi.Client.RestApiClient(new HttpClient());
+        await client.SendJsonRequest(HttpMethod.Delete, new Uri($"http://localhost:5018/Pns/SmazatZakaznika?id={id}"), string.Empty);
+
+        await LoadData();
     }
 
     /// <summary>
@@ -200,9 +211,6 @@ public partial class MainPage : ContentPage
         //    }
         //}
     }
-
-  
-
 
 }
 

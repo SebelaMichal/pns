@@ -53,6 +53,18 @@ namespace PnsApp.WebApi.Controllers
             return Ok();
         }
 
+        [HttpDelete(Name = "SmazatZakaznika")]
+        public IActionResult SmazatZakaznika([FromQuery] int id)
+        {
+            AppDbContextFactory factory = new AppDbContextFactory();
+            using (var db = factory.CreateDbContext(null))
+            {
+                var zakaznik = db.Zakaznik.Find(id);
+                db.Zakaznik.Remove(zakaznik);
+                db.SaveChanges();
+            }
 
+            return Ok();
+        }
     }
 }
