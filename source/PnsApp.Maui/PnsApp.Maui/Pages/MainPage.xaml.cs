@@ -1,6 +1,8 @@
 ﻿
+using Newtonsoft.Json;
 using PnsApp.Dto;
 using PnsApp.Maui.ViewModels;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -60,9 +62,13 @@ public partial class MainPage : ContentPage
 
         //nacteni dat z webapi
         var client = new HttpClient();
-        var response = client.GetAsync("https://localhost:7187/Pns/GetZakaznici").Result;
+        var response = client.GetAsync("http://localhost:5018/Pns/GetZakaznici").Result;
         var json = response.Content.ReadAsStringAsync().Result;
-        var zakaznici = JsonSerializer.Deserialize<List<DetailZakaznikaViewModel>>(json);
+
+        Newtonsoft.Json.JsonSerializer jser = new Newtonsoft.Json.JsonSerializer();
+        var zakaznici = (List<ZakaznikDto>)jser.Deserialize(new StringReader(json), typeof(List<ZakaznikDto>));
+
+        //var zakaznici = JsonSerializer.Deserialize<List<ZakaznikDto>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = false });
         detailZakaznikaListView.ItemsSource = zakaznici;
 
 
