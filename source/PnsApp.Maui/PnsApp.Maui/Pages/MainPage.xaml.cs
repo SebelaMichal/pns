@@ -62,8 +62,11 @@ public partial class MainPage : ContentPage
         var client = new HttpClient();
         var response = client.GetAsync("https://localhost:7187/Pns/GetZakaznici").Result;
         var json = response.Content.ReadAsStringAsync().Result;
-        var zakaznici = JsonSerializer.Deserialize<List<DetailZakaznikaViewModel>>(json);
-        detailZakaznikaListView.ItemsSource = zakaznici;
+        Newtonsoft.Json.JsonSerializer js = new Newtonsoft.Json.JsonSerializer();
+        var zakaznik = Newtonsoft.Json.JsonConvert.DeserializeObject<List<DetailZakaznikaViewModel>>(json);
+
+        //var zakaznici = JsonSerializer.Deserialize<List<DetailZakaznikaViewModel>>(json);
+        detailZakaznikaListView.ItemsSource = zakaznik;
 
 
 
