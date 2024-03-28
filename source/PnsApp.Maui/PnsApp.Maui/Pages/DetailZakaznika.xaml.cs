@@ -100,9 +100,10 @@ public partial class DetailZakaznika : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void detailZakaznikaSmazat_Clicked(object sender, EventArgs e)
+    private async void detailZakaznikaSmazat_Clicked(object sender, EventArgs e)
     {
-        Navigation.PopAsync();
+        await client.ApiDeleteAsync(DotazDelete.SmazatZakaznika, _model.Id);
+        await Navigation.PopAsync();
     }
 
    
