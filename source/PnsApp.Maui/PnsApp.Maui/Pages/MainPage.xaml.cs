@@ -47,7 +47,6 @@ public partial class MainPage : ContentPage
     private async void LoadData()
     {
         detailZakaznikaListView.ItemsSource = await client.ApiGetAsync<List<ZakaznikDto>>(DotazGet.GetZakaznici);
-        
     }
 
     /// <summary>
@@ -89,8 +88,8 @@ public partial class MainPage : ContentPage
         Button btn = (Button)sender;
         var color = (string)btn.CommandParameter;
 
-        this.BackgroundColor = Color.Parse(color);
-        this.SaveCurrentPageBackground();
+        //this.BackgroundColor = Color.Parse(color);
+        //this.SaveCurrentPageBackground();
     }
 
     /// <summary>
@@ -98,33 +97,7 @@ public partial class MainPage : ContentPage
     /// </summary>
     private void SaveCurrentPageBackground()
     {
-        //Preferences.Set("pb", this.BackgroundColor.ToHex());
-
-        //AppDbContextFactory factory = new AppDbContextFactory();
-        //using (var db = factory.CreateDbContext(null))
-        //{
-        //    BarvaPozadi bp;
-        //    if (this.BackgroundColor.ToHex() == "#00FF00")
-        //        bp = BarvaPozadi.Zelena;
-        //    else if (this.BackgroundColor.ToHex() == "#FF0000")
-        //        bp = BarvaPozadi.Cervena;
-        //    else
-        //        bp = BarvaPozadi.Modra;
-
-        //    var pozadiDb = db.Pozadi.SingleOrDefault();
-
-        //    if(pozadiDb == null)
-        //    {
-        //        pozadiDb = new Pozadi() { BarvaPozadi = bp };
-        //        db.Pozadi.Add(pozadiDb);
-        //    }
-        //    else
-        //    {
-        //        pozadiDb.BarvaPozadi = bp;
-        //    }
-
-        //    db.SaveChanges();
-        //}
+       
     }
 
 
@@ -134,37 +107,7 @@ public partial class MainPage : ContentPage
     /// </summary>
     private void LoadPageBackground()
     {
-        //this.BackgroundColor = Color.Parse(Preferences.Get("pb", this.BackgroundColor.ToHex()));
-
-        /*
-        string strColor = Preferences.Get("pb", null);
-        if (strColor != null)
-        {
-            this.BackgroundColor = Color.Parse(strColor);
-        }*/
-
-
-        //AppDbContextFactory factory = new AppDbContextFactory();
-        //using (var db = factory.CreateDbContext(null))
-        //{
-        //    var barva = (db.Pozadi.SingleOrDefault() ?? new Pozadi() { BarvaPozadi = BarvaPozadi.Cervena }).BarvaPozadi;
-
-        //    switch (barva)
-        //    {
-        //        case BarvaPozadi.Cervena:
-        //            this.BackgroundColor = Color.FromHex("#FF0000");
-        //            break;
-
-        //        case BarvaPozadi.Modra:
-        //            this.BackgroundColor = Color.FromHex("#0000FF");
-        //            break;
-
-        //        case BarvaPozadi.Zelena:
-        //            this.BackgroundColor = Color.FromHex("#00FF00");
-        //            break;
-
-        //    }
-        //}
+       
     }
 
 
