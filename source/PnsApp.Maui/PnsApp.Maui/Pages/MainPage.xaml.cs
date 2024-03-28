@@ -30,10 +30,6 @@ public partial class MainPage : ContentPage
     private async void Vsup_detailZakaznika(object sender, EventArgs e)
     {
         var page = new DetailZakaznika(null);
-        page.AddedItem += delegate (object sender, ItemEventArgs iea)
-        {
-            //this.Zakaznici.Add(iea.Model);
-        };
         await Navigation.PushAsync(page);
     }
 

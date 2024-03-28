@@ -35,13 +35,14 @@ public partial class DetailZakaznika : ContentPage
     public DetailZakaznika(int? dbId)
     {
         client = new RestApiClient(new HttpClient());
+        _dbId = dbId;
         InitializeComponent();
 
         Nacti(dbId);
 
     }
 
-    private void Nacti(int? id = null)
+    private async void Nacti(int? id = null)
     {
         if (id == null) 
         {
@@ -49,7 +50,7 @@ public partial class DetailZakaznika : ContentPage
         }
         else    //editace záznamu
         {
-            this.BindingContext = client.ApiGetAsync<ZakaznikDto>(DotazGet.GetZakaznik, id).Result;
+            this.BindingContext = _model = await client.ApiGetAsync<DetailZakaznikaViewModel>(DotazGet.GetZakaznik, id);
             
         }
     }
@@ -68,26 +69,17 @@ public partial class DetailZakaznika : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ulozitZakaznika_btn_Clicked(object sender, EventArgs e)
+    private async void ulozitZakaznika_btn_Clicked(object sender, EventArgs e)
     {
-        //AppDbContextFactory factory = new AppDbContextFactory();
-        //using (var db = factory.CreateDbContext(null))
-        //{
-        //	if (this._dbId == null)
-        //	{
-        //		var zak = ZakaznikMapper.ToEntity(Model);
-        //		db.Zakaznik.Add(zak);
-        //	}
-        //	else
-        //	{
-        //		var zak = db.Zakaznik.Find(_dbId.Value);
-        //		ZakaznikMapper.ToEntity(Model, zak);
-        //	}
-        //	db.SaveChanges();
-        //}
-
-        OnAddedItem(new ItemEventArgs() { Model = _model });
-        Navigation.PopAsync();
+       if (_dbId == null)
+        {
+            await client.ApiPostAsync(DotazPost.PridatZakaznika, _model);
+        }
+        else
+        {
+            await client.ApiPutAsync(DotazPut.UpravitZakaznika, _model);
+        }
+        await Navigation.PopAsync();
     }
 
     /// <summary>
@@ -110,37 +102,14 @@ public partial class DetailZakaznika : ContentPage
     /// <param name="e"></param>
     private void detailZakaznikaSmazat_Clicked(object sender, EventArgs e)
     {
-        OnDeleted(new ItemEventArgs() { Model = _model });
         Navigation.PopAsync();
     }
 
-    /// <summary>
-    /// Deklarace pro udalost Deleted
-    /// </summary>
-    public event ItemEventHandler Deleted;
+   
 
-    /// <summary>
-    /// Metoda vyvolava udalost Deleted
-    /// </summary>
-    /// <param name="e"></param>
-    protected virtual void OnDeleted(ItemEventArgs e)
-    {
-        Deleted?.Invoke(this, e);
-    }
+   
 
-    /// <summary>
-    /// Deklarace pro udalost AddItem
-    /// </summary>
-    public event ItemEventHandler AddedItem;
-
-    /// <summary>
-    /// Metoda vyvolava udalost AddedItem
-    /// </summary>
-    /// <param name="ea"></param>
-    protected virtual void OnAddedItem(ItemEventArgs ea)
-    {
-        AddedItem?.Invoke(this, ea);
-    }
+  
 }
 
 /// <summary>

@@ -16,7 +16,8 @@ namespace PnsApp.Maui.Extension
         public static async Task<T> ApiGetAsync<T>(this RestApiClient api, DotazGet dotaz)
         {
             var response = await api.SendJsonRequest(HttpMethod.Get, new Uri(_url + dotaz.ToString()), null);
-            return response.DeseriaseJsonResponseAsync<T>().Result;
+            
+            return await response.DeseriaseJsonResponseAsync<T>();
         }
        
         public static async Task<T> ApiGetAsync<T>(this RestApiClient api, DotazGet dotaz, int? id)
@@ -56,6 +57,7 @@ namespace PnsApp.Maui.Extension
         public enum DotazPost
         {
             PridatZakaznika
+            
         }
 
         public enum DotazPut
