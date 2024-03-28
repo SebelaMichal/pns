@@ -22,6 +22,18 @@ namespace PnsApp.Maui.Mappers
             });
         }
 
+        public static ZakaznikDto ToDto(Zakaznik zakaznik)
+        {
+            return new ZakaznikDto
+            {
+                Jmeno = zakaznik.Jmeno,
+                Prijmeni = zakaznik.Prijmeni,
+                Telefon = zakaznik.Telefon,
+                Email = zakaznik.Email,
+                Id = zakaznik.Id,
+            };
+        }
+
         public static Zakaznik ToEntity(ZakaznikDto model, Zakaznik entity = null)
         {
             var zak = entity ?? new Zakaznik();
@@ -29,11 +41,22 @@ namespace PnsApp.Maui.Mappers
             zak.Prijmeni = model.Prijmeni;
             zak.Telefon = model.Telefon;
             zak.Email = model.Email;
-            //zak.Id = model.Id;
+            zak.Id = model.Id;
 
             return zak;
         }
 
+      
+       
+
         
+
+
+
+
+
+
+
+
     }
 }

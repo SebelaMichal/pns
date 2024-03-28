@@ -1,24 +1,26 @@
 ﻿
+using DotNet.RestApi.Client;
 using PnsApp.Dto;
 using PnsApp.Maui.ViewModels;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using PnsApp.Maui.Extension;
+using static PnsApp.Maui.Extension.RestApiExtension;
 
 namespace PnsApp.Maui.Pages;
 
 public partial class MainPage : ContentPage
 {
-    //public List<DetailZakaznikaViewModel> Zakaznici { get; set; }
-    
+    private readonly RestApiClient client;
     public MainPage()
-	{
+    {
         InitializeComponent();
-        //Zakaznici = new List<DetailZakaznikaViewModel>();
+        client = new RestApiClient(new HttpClient());
+
         //LoadPageBackground();
     }
-
 
     /// <summary>
     /// Metoda pro pridani noveho zakaznika
@@ -28,7 +30,7 @@ public partial class MainPage : ContentPage
     private async void Vsup_detailZakaznika(object sender, EventArgs e)
     {
         var page = new DetailZakaznika(null);
-        page.AddedItem += delegate(object sender, ItemEventArgs iea)
+        page.AddedItem += delegate (object sender, ItemEventArgs iea)
         {
             //this.Zakaznici.Add(iea.Model);
         };
@@ -41,35 +43,15 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        //detailZakaznikaListView.ItemsSource = null;
-        //detailZakaznikaListView.ItemsSource = Zakaznici;
-
         LoadData();
     }
     /// <summary>
     /// metoda, která načte z databáze mssql seznam zákazníků a zobrazí je v listview, případně občerství seznam dle db
     /// </summary>
-    private void LoadData()
+    private async void LoadData()
     {
-        /*
-        AppDbContextFactory factory = new AppDbContextFactory();
-        using (var db = factory.CreateDbContext(null))
-        {
-            detailZakaznikaListView.ItemsSource = ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
-        }*/
-
-        //nacteni dat z webapi
-        var client = new HttpClient();
-        var response = client.GetAsync("https://localhost:7187/Pns/GetZakaznici").Result;
-        var json = response.Content.ReadAsStringAsync().Result;
-        Newtonsoft.Json.JsonSerializer js = new Newtonsoft.Json.JsonSerializer();
-        var zakaznik = Newtonsoft.Json.JsonConvert.DeserializeObject<List<DetailZakaznikaViewModel>>(json);
-
-        //var zakaznici = JsonSerializer.Deserialize<List<DetailZakaznikaViewModel>>(json);
-        detailZakaznikaListView.ItemsSource = zakaznik;
-
-
-
+        detailZakaznikaListView.ItemsSource = await client.ApiGetAsync<List<ZakaznikDto>>(DotazGet.GetZakaznici);
+        
     }
 
     /// <summary>
@@ -79,14 +61,13 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private async void editButton_Clicked(object sender, EventArgs e)
     {
-        
+
         var btn = (Button)sender;
         var id = (int)btn.CommandParameter;
 
         var page = new DetailZakaznika(id);
         await Navigation.PushAsync(page);
 
-        //todo: loaddata
     }
 
     /// <summary>
@@ -94,19 +75,11 @@ public partial class MainPage : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void smazatButton_Clicked(object sender, EventArgs e)
+    private async void smazatButton_Clicked(object sender, EventArgs e)
     {
         var btn = (Button)sender;
         var id = (int)btn.CommandParameter;
-
-        //AppDbContextFactory factory = new AppDbContextFactory();
-        //using (var db = factory.CreateDbContext(null))
-        //{
-        //    var dbZaznamZakaznika = db.Zakaznik.Find(id);
-        //    db.Zakaznik.Remove(dbZaznamZakaznika);
-        //    db.SaveChanges();
-        //}
-
+        await client.ApiDeleteAsync(DotazDelete.SmazatZakaznika, id);
         LoadData();
     }
 
@@ -158,7 +131,7 @@ public partial class MainPage : ContentPage
         //}
     }
 
-   
+
 
     /// <summary>
     /// Nacita barvu pozadi po spusteni aplikace
@@ -198,7 +171,7 @@ public partial class MainPage : ContentPage
         //}
     }
 
-  
+
 
 
 }
