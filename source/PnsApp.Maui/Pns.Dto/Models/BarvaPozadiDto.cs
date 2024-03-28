@@ -17,6 +17,6 @@ namespace Pns.Dto.Models
     public class BarvaPozadiDto
     {
         public int Id { get; set; }
-        public BarvaPozadiDto BarvaPozadi { get; set; }
+        public BarvaPozadi BarvaPozadi { get; set; }
     }
 }

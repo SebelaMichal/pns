@@ -25,7 +25,7 @@ namespace PnsApp.Maui.Mappers
         public static Pozadi ToEntity(BarvaPozadiDto model, Pozadi entity = null)
         {
             var ent = entity ?? new Pozadi();
-            ent.BarvaPozadi = (BarvaPozadiDto)model.BarvaPozadi;
+            ent.BarvaPozadi = model.BarvaPozadi;
             // ent.Id = model.Id;
 
 
