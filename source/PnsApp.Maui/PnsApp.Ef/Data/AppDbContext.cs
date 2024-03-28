@@ -34,7 +34,7 @@ namespace PnsApp.Maui.Data
         [Key]
         public int Id { get;set; }
 
-        public BarvaPozadi BarvaPozadi { get; set; }
+        public BarvaPozadiDto BarvaPozadi { get; set; }
     }
 
     public class AppDbContext: DbContext
@@ -54,8 +54,13 @@ namespace PnsApp.Maui.Data
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=192.168.1.57;Database=LuRaMi;User Id=lurami_user;Password=lurami_user;TrustServerCertificate=True");
+//<<<<<<< Updated upstream
+ //           optionsBuilder.UseSqlServer("Server=192.168.1.57;Database=LuRaMi;User Id=lurami_user;Password=lurami_user;TrustServerCertificate=True");
 //            optionsBuilder.UseSqlServer("Server=192.168.88.209;Database=LuRaMi3;User Id=lurami_user;Password=lurami;Persist Security Info=True;Encrypt=True;TrustServerCertificate=True");
+//=======
+            optionsBuilder.UseSqlServer("Server=192.168.68.112\\SQLEXPRESS;Database=Lurami;User Id=lurami_user;Password=lurami_user;TrustServerCertificate=True");
+            //optionsBuilder.UseSqlServer("Server=192.168.68.209;Database=LuRaMi3;User Id=lurami_user;Password=lurami;Persist Security Info=True;Encrypt=True;TrustServerCertificate=True");
+//>>>>>>> Stashed changes
 
             return new AppDbContext(optionsBuilder.Options);
         }

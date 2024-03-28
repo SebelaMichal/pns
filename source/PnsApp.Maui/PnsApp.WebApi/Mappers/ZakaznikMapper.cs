@@ -19,6 +19,7 @@ namespace PnsApp.Maui.Mappers
                 Telefon = x.Telefon,
                 Email = x.Email,
                 Id = x.Id,
+                
             });
         }
 

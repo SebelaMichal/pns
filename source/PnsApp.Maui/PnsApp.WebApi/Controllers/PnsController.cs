@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Pns.Dto.Models;
 using PnsApp.Dto;
 using PnsApp.Maui.Data;
 using PnsApp.Maui.Mappers;
@@ -65,6 +66,41 @@ namespace PnsApp.WebApi.Controllers
             }
 
             return Ok();
+        }
+
+
+        [HttpGet(Name = "Naètení pozadí")]
+        public IActionResult NacteniPozadi()
+        {
+            AppDbContextFactory factory = new AppDbContextFactory();
+            using (var db = factory.CreateDbContext(null))
+            {
+                var pozadi = db.Pozadi.FirstOrDefault();
+                
+                return Ok(pozadi);
+            }
+        }
+
+        [HttpPost(Name = "Uložení pozadí")]
+        public IActionResult UlozeniPozadi(BarvaPozadiDto pozadi)
+        {
+            AppDbContextFactory factory = new AppDbContextFactory();
+            using (var db = factory.CreateDbContext(null))
+            {
+                var efPozadi = PozadiMapper.ToEntity(pozadi);
+                efPozadi.Id = 1;
+                var existingPozadi = db.Pozadi.Find(efPozadi.Id);
+                if (existingPozadi != null)
+                {
+                    db.Entry(existingPozadi).CurrentValues.SetValues(efPozadi);
+                    db.SaveChanges();
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
         }
     }
 }

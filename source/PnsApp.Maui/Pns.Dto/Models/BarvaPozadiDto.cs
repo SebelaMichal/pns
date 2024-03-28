@@ -12,4 +12,11 @@ namespace Pns.Dto.Models
         Zelena = 2,
         Modra = 3
     }
+
+
+    public class BarvaPozadiDto
+    {
+        public int Id { get; set; }
+        public BarvaPozadiDto BarvaPozadi { get; set; }
+    }
 }
