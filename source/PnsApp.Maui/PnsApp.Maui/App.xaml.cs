@@ -1,4 +1,6 @@
-﻿namespace PnsApp.Maui;
+﻿using PnsApp.Maui.Pages;
+
+namespace PnsApp.Maui;
 
 public partial class App : Application
 {

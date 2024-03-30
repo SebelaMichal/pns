@@ -37,9 +37,17 @@
             </ListView>
 
             <HorizontalStackLayout HorizontalOptions="Center" Margin="0,10">
-                <Button Text="červená" BackgroundColor="Red" Clicked="ColorButton_Clicked" CommandParameter="#FF0000" Margin="5" MinimumWidthRequest="100"/>
-                <Button Text="zelená" BackgroundColor="Green" Clicked="ColorButton_Clicked" CommandParameter="#00FF00" Margin="5" MinimumWidthRequest="100"/>
-                <Button Text="modrá" BackgroundColor="Blue" Clicked="ColorButton_Clicked" CommandParameter="#0000FF" Margin="5" MinimumWidthRequest="100"/>
+                <Button Text="červená" BackgroundColor="#F88091" Clicked="ColorButton_Clicked" CommandParameter="1" Margin="5" MinimumWidthRequest="80"/>
+                <Button Text="zelená" BackgroundColor="#41C27A" Clicked="ColorButton_Clicked" CommandParameter="2" Margin="5" MinimumWidthRequest="80"/>
+                <Button Text="modrá" BackgroundColor="#A1A8F6" Clicked="ColorButton_Clicked" CommandParameter="3" Margin="5" MinimumWidthRequest="80"/>
+                <Button Text="Bílá" BackgroundColor="#FFFFFF" Clicked="ColorButton_Clicked" CommandParameter="4" Margin="5" MinimumWidthRequest="80" TextColor="#000000"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="10">
+                <Label Text="Disco" VerticalTextAlignment="Center" Margin="10,0" FontAttributes="Bold"/>
+                <Switch x:Name="discoSwitch" IsToggled="False" Toggled="DiscoSwitch_Toggled" HorizontalOptions="Center" ThumbColor="Black"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Label x:Name="barva"/>
             </HorizontalStackLayout>
             
         </VerticalStackLayout>

@@ -8,20 +8,23 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using PnsApp.Maui.Extension;
+using static PnsApp.Maui.Extension.RestApiExtension;
+using System;
 
 namespace PnsApp.Maui.Pages;
 
 public partial class MainPage : ContentPage
 {
-    //public List<DetailZakaznikaViewModel> Zakaznici { get; set; }
-    
+    private readonly RestApiClient client;
+    Random random = new Random();
+    private bool Disko { get; set; } = false;
     public MainPage()
-	{
+    {
         InitializeComponent();
-        //Zakaznici = new List<DetailZakaznikaViewModel>();
-        //LoadPageBackground();
+        client = new RestApiClient(new HttpClient());
+        
     }
-
 
     /// <summary>
     /// Metoda pro pridani noveho zakaznika
@@ -31,10 +34,6 @@ public partial class MainPage : ContentPage
     private async void Vsup_detailZakaznika(object sender, EventArgs e)
     {
         var page = new DetailZakaznika(null);
-        page.AddedItem += delegate(object sender, ItemEventArgs iea)
-        {
-            //this.Zakaznici.Add(iea.Model);
-        };
         await Navigation.PushAsync(page);
     }
 
@@ -44,42 +43,33 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        //detailZakaznikaListView.ItemsSource = null;
-        //detailZakaznikaListView.ItemsSource = Zakaznici;
-
         LoadData();
+        DiskoParty();
+        LoadPageBackground();
+
     }
+
+    IDispatcherTimer timer;
+
+    private void DiskoParty()
+    {
+        timer = Dispatcher.CreateTimer();
+        timer.Interval = TimeSpan.FromMilliseconds(10);
+        timer.Tick += (sender, e) =>
+        {
+            string color = String.Format("#{0:X6}", random.Next(0x1000000));
+            this.BackgroundColor = Color.Parse(color);
+        };
+        
+    }
+
+
     /// <summary>
     /// metoda, která načte z databáze mssql seznam zákazníků a zobrazí je v listview, případně občerství seznam dle db
     /// </summary>
-    private async Task LoadData()
+    private async void LoadData()
     {
-        /*
-        AppDbContextFactory factory = new AppDbContextFactory();
-        using (var db = factory.CreateDbContext(null))
-        {
-            detailZakaznikaListView.ItemsSource = ZakaznikMapper.ToViewModel(db.Zakaznik).ToList();
-        }*/
-
-        /*
-        //nacteni dat z webapi
-        var client = new HttpClient();
-        var response = client.GetAsync("http://localhost:5018/Pns/GetZakaznici").Result;
-        var json = response.Content.ReadAsStringAsync().Result;
-
-        Newtonsoft.Json.JsonSerializer jser = new Newtonsoft.Json.JsonSerializer();
-        var zakaznici = (List<ZakaznikDto>)jser.Deserialize(new StringReader(json), typeof(List<ZakaznikDto>));
-        
-        //var zakaznici = JsonSerializer.Deserialize<List<ZakaznikDto>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = false });
-        detailZakaznikaListView.ItemsSource = zakaznici;
-        */
-
-
-        DotNet.RestApi.Client.RestApiClient client = new DotNet.RestApi.Client.RestApiClient(new HttpClient());
-        var response = await client.SendJsonRequest(HttpMethod.Get, new Uri("http://localhost:5018/Pns/GetZakaznici"), null);
-        detailZakaznikaListView.ItemsSource = await response.DeseriaseJsonResponseAsync<List<ZakaznikDto>>();
-
-
+        detailZakaznikaListView.ItemsSource = await client.ApiGetAsync<List<ZakaznikDto>>(DotazGet.GetZakaznici);
     }
 
     /// <summary>
@@ -89,14 +79,13 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private async void editButton_Clicked(object sender, EventArgs e)
     {
-        
+
         var btn = (Button)sender;
         var id = (int)btn.CommandParameter;
 
         var page = new DetailZakaznika(id);
         await Navigation.PushAsync(page);
 
-        //todo: loaddata
     }
 
     /// <summary>
@@ -108,20 +97,8 @@ public partial class MainPage : ContentPage
     {
         var btn = (Button)sender;
         var id = (int)btn.CommandParameter;
-
-        //AppDbContextFactory factory = new AppDbContextFactory();
-        //using (var db = factory.CreateDbContext(null))
-        //{
-        //    var dbZaznamZakaznika = db.Zakaznik.Find(id);
-        //    db.Zakaznik.Remove(dbZaznamZakaznika);
-        //    db.SaveChanges();
-        //}
-
-
-        DotNet.RestApi.Client.RestApiClient client = new DotNet.RestApi.Client.RestApiClient(new HttpClient());
-        await client.SendJsonRequest(HttpMethod.Delete, new Uri($"http://localhost:5018/Pns/SmazatZakaznika?id={id}"), string.Empty);
-
-        await LoadData();
+        await client.ApiDeleteAsync(DotazDelete.SmazatZakaznika, id);
+        LoadData();
     }
 
     /// <summary>
@@ -132,85 +109,65 @@ public partial class MainPage : ContentPage
     private void ColorButton_Clicked(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
-        var color = (string)btn.CommandParameter;
+        var color = btn.CommandParameter;
+        
 
-        this.BackgroundColor = Color.Parse(color);
-        this.SaveCurrentPageBackground();
+        //generator nahodnych barev
+
+       
+        this.SaveCurrentPageBackground(int.Parse(color.ToString()));
     }
 
     /// <summary>
     /// Uklada nastaveni barvy pozadi do aplikace 
     /// </summary>
-    private void SaveCurrentPageBackground()
+    private async void SaveCurrentPageBackground(int color)
     {
-        //Preferences.Set("pb", this.BackgroundColor.ToHex());
-
-        //AppDbContextFactory factory = new AppDbContextFactory();
-        //using (var db = factory.CreateDbContext(null))
-        //{
-        //    BarvaPozadi bp;
-        //    if (this.BackgroundColor.ToHex() == "#00FF00")
-        //        bp = BarvaPozadi.Zelena;
-        //    else if (this.BackgroundColor.ToHex() == "#FF0000")
-        //        bp = BarvaPozadi.Cervena;
-        //    else
-        //        bp = BarvaPozadi.Modra;
-
-        //    var pozadiDb = db.Pozadi.SingleOrDefault();
-
-        //    if(pozadiDb == null)
-        //    {
-        //        pozadiDb = new Pozadi() { BarvaPozadi = bp };
-        //        db.Pozadi.Add(pozadiDb);
-        //    }
-        //    else
-        //    {
-        //        pozadiDb.BarvaPozadi = bp;
-        //    }
-
-        //    db.SaveChanges();
-        //}
+        await client.ApiPutAsync(DotazPut.UpravitBarvu, color, false);
+        LoadPageBackground();
     }
 
-   
+
 
     /// <summary>
     /// Nacita barvu pozadi po spusteni aplikace
     /// </summary>
-    private void LoadPageBackground()
+    private async void LoadPageBackground()
     {
-        //this.BackgroundColor = Color.Parse(Preferences.Get("pb", this.BackgroundColor.ToHex()));
+        var barvaId = await client.ApiGetAsync<int>(DotazGet.NacistBarvu);
 
-        /*
-        string strColor = Preferences.Get("pb", null);
-        if (strColor != null)
+        switch(barvaId)
         {
-            this.BackgroundColor = Color.Parse(strColor);
-        }*/
-
-
-        //AppDbContextFactory factory = new AppDbContextFactory();
-        //using (var db = factory.CreateDbContext(null))
-        //{
-        //    var barva = (db.Pozadi.SingleOrDefault() ?? new Pozadi() { BarvaPozadi = BarvaPozadi.Cervena }).BarvaPozadi;
-
-        //    switch (barva)
-        //    {
-        //        case BarvaPozadi.Cervena:
-        //            this.BackgroundColor = Color.FromHex("#FF0000");
-        //            break;
-
-        //        case BarvaPozadi.Modra:
-        //            this.BackgroundColor = Color.FromHex("#0000FF");
-        //            break;
-
-        //        case BarvaPozadi.Zelena:
-        //            this.BackgroundColor = Color.FromHex("#00FF00");
-        //            break;
-
-        //    }
-        //}
+            case 1:
+                this.BackgroundColor = Color.Parse("#F88091");
+                break;
+            case 2:
+                this.BackgroundColor = Color.Parse("#41C27A");
+                break;
+            case 3:
+                this.BackgroundColor = Color.Parse("#A1A8F6");
+                break;
+            case 4:
+                this.BackgroundColor = Colors.White;
+                break;
+            default:
+                this.BackgroundColor = Colors.White;
+                break;
+        }
     }
 
+    private void DiscoSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        if (e.Value)
+        {
+            timer.Start();
+        }
+        else
+        {
+            timer.Stop();
+            //Task.Delay(1000);
+            LoadPageBackground();
+        }
+    }
 }
 

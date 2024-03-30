@@ -5,8 +5,11 @@ using Java.Security.Cert;
 using Javax.Net.Ssl;
 #endif
 
-
+using Microsoft.Extensions.DependencyInjection;
+using DotNet.RestApi.Client;
 using Microsoft.Extensions.Logging;
+using PnsApp.Maui.Pages;
+using PnsApp.Maui.ViewModels;
 
 namespace PnsApp.Maui;
 
@@ -15,13 +18,15 @@ public static class MauiProgram
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
+        builder
+            .UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+        
+
 #if ANDROID
         DangerousTrustProvider.Register();
 #endif
@@ -35,6 +40,20 @@ public static class MauiProgram
         //Return the built app
         return builder.Build();
 	}
+    public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
+    {
+        mauiAppBuilder.Services.AddSingleton<MainPage>();
+        mauiAppBuilder.Services.AddTransient<RestApiClient>();
+        mauiAppBuilder.Services.AddTransient<DetailZakaznikaViewModel>();
+
+
+        return mauiAppBuilder;
+    }
+
+
+
+
+
 }
 
 #if ANDROID

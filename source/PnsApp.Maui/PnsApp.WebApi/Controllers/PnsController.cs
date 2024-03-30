@@ -20,6 +20,23 @@ namespace PnsApp.WebApi.Controllers
             }
         }
 
+        [HttpGet(Name = "GetZakaznik")]
+        public IActionResult GetZakaznik(int id)
+        {
+            AppDbContextFactory factory = new AppDbContextFactory();
+            using (var db = factory.CreateDbContext(null))
+            {
+                var zakaznik = db.Zakaznik.FirstOrDefault(x => x.Id == id);
+                if (zakaznik == null)
+                {
+                    return null;
+                }
+                var result = ZakaznikMapper.ToDto(zakaznik);
+                return Ok(result);
+                
+            }
+        }
+
         [HttpPost(Name = "PridatZakaznika")]
         public IActionResult PridatZakaznika(ZakaznikDto zakaznik)
         {
@@ -59,10 +76,19 @@ namespace PnsApp.WebApi.Controllers
             AppDbContextFactory factory = new AppDbContextFactory();
             using (var db = factory.CreateDbContext(null))
             {
-                var zakaznik = db.Zakaznik.Find(id);
-                db.Zakaznik.Remove(zakaznik);
+                var efZakaznik = db.Zakaznik.Find(id);
+                if (efZakaznik == null)
+                {
+                    return NotFound();
+                }
+
+                db.Zakaznik.Remove(efZakaznik);
                 db.SaveChanges();
             }
+
+            return Ok();
+        }
+
 
             return Ok();
         }
