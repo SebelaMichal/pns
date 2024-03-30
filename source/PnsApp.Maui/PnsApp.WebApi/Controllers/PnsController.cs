@@ -88,9 +88,5 @@ namespace PnsApp.WebApi.Controllers
 
             return Ok();
         }
-
-
-            return Ok();
-        }
     }
 }
