@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PnsApp.Maui.Data;
 using PnsApp.WebApi.PomocneTridy;
 
@@ -19,7 +20,7 @@ builder.Services.AddScoped<ScopeTrida>();
 
 builder.Services.AddDbContext<AppDbContext>((optionsBuilder) =>
 {
-    optionsBuilder.UseSqlServer("Server=192.168.1.57;Database=LuRaMi;User Id=lurami_user;Password=lurami_user;TrustServerCertificate=True");
+    optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString(nameof(AppDbContext)));
     //            optionsBuilder.UseSqlServer("Server=192.168.88.209;Database=LuRaMi3;User Id=lurami_user;Password=lurami;Persist Security Info=True;Encrypt=True;TrustServerCertificate=True");
 });
 
