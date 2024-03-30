@@ -1,4 +1,5 @@
-﻿using PnsApp.Dto;
+﻿using Pns.Dto.Models;
+using PnsApp.Dto;
 using PnsApp.Maui.Data;
 using System;
 using System.Collections.Generic;

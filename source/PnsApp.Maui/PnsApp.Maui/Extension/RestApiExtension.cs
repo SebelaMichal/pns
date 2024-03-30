@@ -10,7 +10,7 @@ namespace PnsApp.Maui.Extension
     
     public static class RestApiExtension
     {
-        private static string _url = "https://localhost:7187/";
+        private static string _url = "http://localhost:5018/";
 
 
         public static async Task<T> ApiGetAsync<T>(this RestApiClient api, DotazGet dotaz)

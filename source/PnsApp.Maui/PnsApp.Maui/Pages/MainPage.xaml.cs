@@ -40,13 +40,20 @@ public partial class MainPage : ContentPage
     /// <summary>
     /// Aktualizuje obsah ListView po nacteni stranky
     /// </summary>
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        LoadData();
-        DiskoParty();
-        LoadPageBackground();
 
+        try
+        {
+            await LoadData();
+            DiskoParty();
+            LoadPageBackground();
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 
     IDispatcherTimer timer;
@@ -67,7 +74,7 @@ public partial class MainPage : ContentPage
     /// <summary>
     /// metoda, která načte z databáze mssql seznam zákazníků a zobrazí je v listview, případně občerství seznam dle db
     /// </summary>
-    private async void LoadData()
+    private async Task LoadData()
     {
         detailZakaznikaListView.ItemsSource = await client.ApiGetAsync<List<ZakaznikDto>>(DotazGet.GetZakaznici);
     }
@@ -98,7 +105,7 @@ public partial class MainPage : ContentPage
         var btn = (Button)sender;
         var id = (int)btn.CommandParameter;
         await client.ApiDeleteAsync(DotazDelete.SmazatZakaznika, id);
-        LoadData();
+        await LoadData();
     }
 
     /// <summary>

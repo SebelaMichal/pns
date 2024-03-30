@@ -9,39 +9,46 @@ namespace PnsApp.WebApi.Controllers
     [Route("[controller]/[action]")]
     public class BackgroundController : ControllerBase
     {
+        private AppDbContext _db;
+        public BackgroundController(AppDbContext db) 
+        {
+            _db = db;
+        }
 
         [HttpGet(Name = "NacistBarvu")]
         public IActionResult NacistBarvu()
         {
+            /*
             AppDbContextFactory factory = new AppDbContextFactory();
             using (var db = factory.CreateDbContext(null))
-            {
-                var data = db.Pozadi.FirstOrDefault();
+            {*/
+                var data = _db.Pozadi.FirstOrDefault();
                 if (data == null)
                 {
                     return null;
                 }
                 var result = BarvaMapper.ToDto(data);
                 return Ok(result.BarvaPozadi);
-            }
+            //}
         }
 
 
         [HttpPut(Name = "UpravitBarvu")]
         public IActionResult UpravitBarvu(int id)
         {
+            /*
             AppDbContextFactory factory = new AppDbContextFactory();
             using (var db = factory.CreateDbContext(null))
-            {
-                var efData = db.Pozadi.Where(x => x.Id == 1).FirstOrDefault();
+            {*/
+                var efData = _db.Pozadi.Where(x => x.Id == 1).FirstOrDefault();
                 if (efData == null)
                 {
                     return NotFound();
                 }
 
                 BarvaMapper.ToEntity(id, efData);
-                db.SaveChanges();
-            }
+                _db.SaveChanges();
+            //}
 
             return Ok();
         }
