@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+source/PnsApp.Maui/PnsApp.WebApi/appsettings.json
